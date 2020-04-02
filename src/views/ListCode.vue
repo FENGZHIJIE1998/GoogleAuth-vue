@@ -1,5 +1,6 @@
 <template>
   <div>
+    <el-button class="logout" type="danger" @click="logout" circle>遁</el-button>
     <el-table :data="tableData" style="width: 100%" :row-class-name="tableRowClassName">
       <el-table-column prop="name" label="别名" width="180"></el-table-column>
       <el-table-column prop="code" label="验证码" width="180"></el-table-column>
@@ -37,7 +38,7 @@ export default {
       return "success-row";
     },
     /**
-     * 列出表格
+     * 列出数据
      */
     list() {
       this.$axios({
@@ -45,7 +46,6 @@ export default {
         url: "/googleauth/listAll",
         data: {}
       }).then(result => {
-        
         var data = result.data;
         if (data.status === 200) {
           this.tableData = data.data;
@@ -61,6 +61,29 @@ export default {
             duration: "3000"
           });
           return;
+        }
+      });
+    },
+    /**
+     * 退出
+     */
+    logout() {
+      this.$axios({
+        method: "POST",
+        url: "/googleauth/logout",
+        data: {}
+      }).then(result => {
+        //var data = result.data;
+        var data = result.data;
+        if (data.status === 200) {
+          this.$message({
+            showClose: true,
+            message: "您已安全退出系统",
+            type: "success",
+            duration: "3000"
+          });
+          this.$store.commit("setToken", "");
+          this.$router.push({path:'/'});
         }
       });
     },
@@ -113,7 +136,7 @@ export default {
         if (date <= 0) {
           that.clearTimer();
           //clearInterval(interval);
-          //  that.refresh();
+          that.list();
         } else {
           const d = Math.floor(date / 1000 / 60 / 60 / 24);
           const h = Math.floor((date / 1000 / 60 / 60) % 24);
@@ -135,6 +158,7 @@ export default {
       n = n.toString();
       return n[1] ? n : "0" + n;
     },
+
     clearTimer() {
       //清理定时器
       if (this.timer.length > 0) {

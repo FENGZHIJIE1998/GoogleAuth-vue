@@ -1,5 +1,7 @@
 # google-auth-vue
-
+基于Springboot+VUE 的前后端分离式谷歌验证码生成器前端代码
+后台代码路径:https://github.com/FENGZHIJIE1998/GoogleAuth
+文档路径：
 ## Project setup
 ```
 npm install

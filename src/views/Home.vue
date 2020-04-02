@@ -3,6 +3,7 @@
     <div id="nav">
       <router-link to="/listCode">验证码</router-link>|
       <router-link to="/addCode">添加</router-link>
+
     </div>
     <transition>
       <router-view/>
